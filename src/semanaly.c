@@ -70,14 +70,12 @@ dep_tbl_entry *chkNmnoYaccIdentifier(node *nptr, symentry *semval,
 				 int which_rword) {
   childptr *tmpptr;
   dep_tbl_entry *tmp_dep_tbl_ptr;
-  symentry *tmp_symptr;
 
   tmpptr = nptr->childrenstart;
   /* safety check */
   if (tmpptr->child == NULL || tmpptr->child->symptr == NULL) {
     bailout("chkYaccIdentifier: invalid child");
   }
-  tmp_symptr = tmpptr->child->symptr;
 
   /* we want to associate types and semvals with the yaccIdentifier 
    * and first insert it into the dep_tbl 
@@ -109,14 +107,12 @@ dep_tbl_entry *chkNmnoCHARCONSTANT(node *nptr, symentry *semval,
 				 int which_rword) {
   node *tmpptr;
   dep_tbl_entry *tmp_dep_tbl_ptr;
-  symentry *tmp_symptr;
 
   tmpptr = nptr;
   /* safety check */
   if (tmpptr == NULL || tmpptr->symptr == NULL) {
     bailout("chkNmnoCHARCONSTANT: node");
   }
-  tmp_symptr = tmpptr->symptr;
 
   /* we want to associate types and semvals with the CHARCONSTANT
    * and first insert it into the dep_tbl 
@@ -302,7 +298,6 @@ int chkBisonDeclar(node *nptr) {
 
 
 int chkCDeclar(node *nptr) {
-  childptr *tmpptr;
 
   /* ignore it ... at the moment we do nothing with it */
   return OK;
@@ -386,7 +381,6 @@ int chkRulebody(node *nptr, dep_tbl_entry *ntlhs_ptr,
 		dep_class curr_dep_class) {
   childptr *tmpptr;
   int curr_gram_el_no = 0;
-  dep_tbl_bucket *bucket;
   char *actionptr = NULL;
 
   tmpptr = nptr->childrenstart;
@@ -424,7 +418,8 @@ int chkRulebody(node *nptr, dep_tbl_entry *ntlhs_ptr,
 	actionptr = 
 	  tmpptr->nextptr->child->childrenstart->nextptr->child->actionptr;
       }
-      bucket = chkRulebodyYaccIdentifier(tmpptr->child, ntlhs_ptr, 
+      /* is this needed? */
+      (void)chkRulebodyYaccIdentifier(tmpptr->child, ntlhs_ptr, 
 					 curr_dep_class, curr_gram_el_no, 
 					 actionptr);
       break;
@@ -434,7 +429,8 @@ int chkRulebody(node *nptr, dep_tbl_entry *ntlhs_ptr,
 	actionptr = 
 	  tmpptr->nextptr->child->childrenstart->nextptr->child->actionptr;
       }
-      bucket = append_bucket(ntlhs_ptr, tmpptr->child->symptr, curr_dep_class,
+      /* is this needed? */
+      (void)append_bucket(ntlhs_ptr, tmpptr->child->symptr, curr_dep_class,
 			     actionptr);
       break;
 

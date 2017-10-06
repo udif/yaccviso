@@ -113,5 +113,6 @@ dep_tbl_bucket* append_bucket(dep_tbl_entry *where, symentry *what_symptr,
 			      dep_class what_dep_class, char *action);
 unsigned int hashfunc(char *name);
 dep_tbl_entry *lookup_gram_el(symentry *symptr);
+int pdeptbl(void);
 
 #endif /* DEPENDENCIES_H */

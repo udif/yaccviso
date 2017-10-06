@@ -460,7 +460,6 @@ int pdepdotentry_edges(FILE *fp, dep_tbl_entry *entry_ptr) {
   char *targetname;
   dep_tbl_bucket *tmp_bucket_ptr;
   
-  int cur_class_nr = -1;
   int occ_nr = 0;
 
   nodename = entry_ptr->symptr->lexemptr;
@@ -468,7 +467,6 @@ int pdepdotentry_edges(FILE *fp, dep_tbl_entry *entry_ptr) {
   /* now traversere all buckets of this node and print the edges */
   for (tmp_bucket_ptr = entry_ptr->bucket; tmp_bucket_ptr != NULL;
        tmp_bucket_ptr = tmp_bucket_ptr->next) {
-    cur_class_nr = tmp_bucket_ptr->class;
     occ_nr ++;
     targetname = tmp_bucket_ptr->rhsptr->symptr->lexemptr;
 #ifndef NO_DOT_BUG

@@ -27,7 +27,7 @@
 CC=		gcc
 LIBS=
 OBJS=		yaccviso
-CCOPTS=		-ansi -g -Wall
+CCOPTS=		-ansi -g -Wall -D_POSIX_C_SOURCE=1
 
 YACC=		bison
 YACCOPT=	--output-file=y.tab.c --defines --verbose

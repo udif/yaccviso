@@ -49,6 +49,7 @@
 #include "tree.h"
 #include "dependencies.h"
 #include "vcg.h"
+#include "semanaly.h"
 
 int optind;
 extern int yyparse(void);		/* why does bison not do this? */   

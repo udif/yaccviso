@@ -146,7 +146,7 @@ node	*mknode(int ntid);
 attrib	*mkattrib(int id, int type, ...);
 int	appendattr(node *nodeptr, attrib *aptr);
 int	appendchld(node *nodeptr, node *chld);
-
+int     ptree(node *nodeptr);
 
 /****************************************************************************
  * section        : global vars

@@ -201,13 +201,13 @@ attrib *mkattrib(int id, int type, ...) {
     i = va_arg(ap, int);
     break;
   case achar:
-    c = va_arg(ap, char);
+    c = va_arg(ap, int); /* char would be promoted to int anyhow... */
     break;
   case astr:
     str = va_arg(ap, char*);
     break;
   case afloat:
-    f = va_arg(ap, float);
+    f = va_arg(ap, double); /* float would be promoted to double anyhow */
     break;
   case avoidptr:
     vptr = va_arg(ap, void*);
