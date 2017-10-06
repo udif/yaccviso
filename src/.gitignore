@@ -1,0 +1,5 @@
+*.o
+y.output
+y.tab.*
+lex.yy.c
+yaccviso
