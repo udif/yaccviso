@@ -51,6 +51,7 @@ extern int yylex(void);
 %token <symptr> TNT			/* non-terminals, like TIDENT,
 					   but can also have a '.' */
 %token <symptr> TNTLHS			/* non terminal left hand side */
+%token TNAMEPREFIX			/* "%name-prefix" */
 %token TLEFT				/* "%left" */
 %token TRIGHT				/* "%right" */
 %token TNONASSOC			/* "%nonassoc" */
@@ -110,6 +111,7 @@ spec            : defsection
 		     expect = "expecting EOF"; 
 		     pdebug(DPARSEDBG,"matched spec - EVERYTHING MATCHED :)");}}
                 ;
+
 defsection      : /* empty */ 
 		  {{ node *tmpptr1 = mknode(defsection);
 		     node *tmpptr2 = mkleaf(TEPSILON, NULL, NULL);
@@ -172,6 +174,11 @@ bisonDeclar     : TSTART
 		     expect = "expecting a yacc declaration or \%{ or \%\%";
 		     pdebug(DPARSEDBG, "matched bisonDeclar - "
 			"TSTART yaccIdentifier"); }}
+				| TNAMEPREFIX STRING_LITERAL {{
+		     node *tmpptr1 = mknode(bisonDeclar);
+		     node *tmpptr2 = mkleaf(STRING_LITERAL, $2, NULL);
+		     appendchld(tmpptr1, tmpptr2);
+		     $$ = tmpptr1; }}
                 | unionDeclar
 		  {{ node *tmpptr = mknode(bisonDeclar);
 		     appendchld(tmpptr, $1);
@@ -180,7 +187,7 @@ bisonDeclar     : TSTART
 		     expect = "expecting a yacc declaration or \%{ or \%\%"; }}
                 | TPURE_PARSER
 		  {{ node *tmpptr1 = mknode(bisonDeclar);
-		     node *tmpptr2 = mkleaf(TPURE_PARSER, NULL, NULL);
+		     node *tmpptr2 = mkleaf(TNAMEPREFIX, NULL, NULL);
 		     appendchld(tmpptr1, tmpptr2);
 		     $$ = tmpptr1;
 		     pdebug(DPARSEDBG, "matched bisonDeclar - TPURE_PARSER"); 

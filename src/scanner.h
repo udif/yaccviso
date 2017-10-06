@@ -94,6 +94,7 @@
 int putbuf(char *str);
 int clearLinebuf(void);
 int eatcomment(void);
+int eateolcomment(void);
 int eatRestOfLine(void);
 int appendbuf(char c);
 char* eatc(void);

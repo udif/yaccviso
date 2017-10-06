@@ -98,6 +98,7 @@ IS		(u|U|l|L)*
 			}
 
 <*>\/\*			{ putbuf(yytext); eatcomment(); } 
+<*>\/\/			{ putbuf(yytext); eateolcomment(); } 
 
 		/* tokens for various whitespaces: ------------------------ */
 <*>[ \v]+		{ pdebug(DSCANDBG, "found one or more spaces");
@@ -169,6 +170,8 @@ IS		(u|U|l|L)*
 {DIGITS}		{ putbuf(yytext); pdebug(DSCANDBG, "found TNUM");
                           yylval.symptr = ident();
 			  return TNUM;           /* number [0-9]+ */ }
+%name-prefix		{ putbuf(yytext); pdebug(DSCANDBG, "found TNAMEPREFIX");
+			  return TNAMEPREFIX; }
 %left			{ putbuf(yytext); pdebug(DSCANDBG, "found TLEFT");
 			  return TLEFT; }
 %right			{ putbuf(yytext); pdebug(DSCANDBG, "found TRIGHT");
@@ -323,6 +326,30 @@ int eatcomment(void) {
     if ( c == EOF ) 
       bailout("EOF in comment");
   } /* end for ( ; ; ) */
+
+  return OK;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -  
+ * function       : eateolcomment
+ * description    : eats up a C++ comment. 
+ *                  
+ * returns        : OK
+ * input          : void
+ * 
+ *
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+int eateolcomment(void) {
+
+  int c;
+
+  pdebug(DSCANDBG, "eating C++ comment");
+
+  clearLinebuf();
+  while ((c = input()) != '\n' && c != EOF)
+      appendbuf(c);    /* eat up text of comment */
+  if ( c == EOF ) 
+    bailout("EOF in comment");
 
   return OK;
 }
@@ -494,6 +521,11 @@ char* eatc(void) {
       ungetnextc(c, buf, &lastbufpos);
       ungetnextc('/', buf, &lastbufpos);
       eatcomment();
+      goto start;
+    case '/':				/* yes, we found a comment */
+      ungetnextc(c, buf, &lastbufpos);
+      ungetnextc('/', buf, &lastbufpos);
+      eateolcomment();
       goto start;
     default:
 	ungetnextc(c, buf, &lastbufpos); /* no, it was not a comment */

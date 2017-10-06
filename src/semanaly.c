@@ -283,6 +283,10 @@ int chkBisonDeclar(node *nptr) {
     /* do nothing */
     break;
 
+  case STRING_LITERAL:
+    /* do nothing */
+    break;
+
   case rword:
     which_rword = chkRword(tmpptr->child); 
     semval = chkTag(tmpptr->nextptr->child);
@@ -290,6 +294,7 @@ int chkBisonDeclar(node *nptr) {
     break;
 
   default:
+    pdebug(DWARNING, "tmpptr->child->id %d", tmpptr->child->id);
     bailout("chkBisonDeclar: unknown type of child in node"); 
     break;
   } /* end switch */
